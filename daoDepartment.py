@@ -37,11 +37,14 @@ class DepartmentDAO:
 
 
     def update(self, department):
+       print(department)
        cursor = self.db.cursor()
        sql="update departments set dept_name= %s where dept_no = %s"
+       print(sql)
        values =[
-             department['dept_no'],
-             department['dept_name']
+             department['dept_name'],
+             department['dept_no']
+             
            ]
        cursor.execute(sql, values)
        self.db.commit()

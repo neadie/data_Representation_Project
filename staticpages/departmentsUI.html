@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="navbar">
+        <a href="/" class="navbar-brand">Data Representation Project</a>
+        <a href="employeesUI.html" class="navbar-item">Employees</a>
+        <a href="departmentsUI.html" class="navbar-item">Departments</a>
+    </div>
+    <div id="create-edit" style="display: none;">
+        <h2>Create -Edit</h2>
+        <table id="createUpdateForm">
+             <tr id = "employee-emp_no">
+                <th>Department code</th>
+                <td><input type="number" name="dept_no"></td>
+            </tr>
+            <tr>
+                <th>Department Name</th>
+                <td><input type="text" name="dept_name" required ></td>
+            </tr>
+            
+           
+            <tr>
+                <td></td>
+                <td><button id="create-button" onclick="doCreate()">Create </button></td>
+                <td><button id="update-button" onclick="doUpdate()">Update</button></td>
+            </tr>
+
+        </table>
+    </div>
+    <div id="display">
+        <h2>Departments</h2>
+        <button onclick="showCreate()">Create</button>
+        <table class="table" id="departmentTable">
+            <tr>
+                <th>Department Code</th>
+                <th>Department Name</th>
+                <th></th>
+                <th></th>
+            </tr>
+
+        </table>
+    </div>
+    <script>
+        function showCreate() {
+            document.getElementById('display').style.display = "none"
+            document.getElementById('create-edit').style.display = "block"
+            document.getElementById('update-button').style.display = "none"
+            
+
+        }
+
+        function showDisplay() {
+            document.getElementById('display').style.display = "block"
+            document.getElementById('create-edit').style.display = "none"
+
+        }
+		
+	
+
+        function doCreate() {
+            department = getDepartmentFromForm()
+            $.ajax({
+                url: "/department",
+                data: JSON.stringify(department),
+                method: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    console.log(result)
+                    addDepartmentToTable(department)
+                    showDisplay()
+                },
+                error: function (xhr, status, error) {
+                    console.log("error " + error)
+                }
+            })
+            showDisplay()
+           
+        }
+
+        function getDepartmentFromForm() {
+
+            var form = document.getElementById('createUpdateForm')
+            department = {}
+            department.dept_no = form.querySelector('input[name="dept_no"]').value
+            department.dept_name = form.querySelector('input[name="dept_name"]').value
+            return department
+        }
+
+        function clearForm() {
+            console.log("in Clear Update form")
+            var form = document.getElementById('createUpdateForm')
+           
+            form.querySelector('input[name="dept_no"]').value = ''
+            form.querySelector('input[name="dept_name"]').value = ''
+            
+        }
+
+        function doDelete(thisElem){
+                var tableElement = document.getElementById('departmentTable');
+                var rowElement = thisElem.parentNode.parentNode;
+                var index = rowElement.rowIndex;
+                dept_no = rowElement.getAttribute("id");
+                $.ajax({
+                    url:"/department/"+dept_no,
+                    method:"DELETE",
+                    dateType:"JSON",
+                    success:function(result){
+                        tableElement.deleteRow(index);
+                    },
+                    error:function(xhr,status,error){
+                        console.log(error)
+                    }
+                })
+                
+            }
+
+            function doUpdate(){
+                department = getDepartmentFromForm()
+				console.log(JSON.stringify(department))
+                updateServer(department)
+                
+            }
+
+            function updateServer(department){
+               $.ajax({
+                    url: "/department/"+department.dept_no,
+                    data: JSON.stringify(department),
+                    method: "PUT",
+                    dataType: "JSON",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        console.log(result)
+                        updateTableRow(department)
+                        showDisplay()
+                        clearForm()
+
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error" + error)
+                    }
+                })
+            }
+
+            function showUpdate(thisElem){
+                var rowElement = thisElem.parentNode.parentNode;
+                department = readDepartmentFromRow(rowElement)
+                console.log(JSON.stringify(department))
+                populateForm(department)
+
+                document.getElementById('display').style.display = "none"
+                document.getElementById('update-button').style.display = "block"
+                document.getElementById('create-button').style.display = "none"
+                document.getElementById('create-edit').style.display = "block"
+				
+
+            }
+
+            function populateForm(department){
+                var form = document.getElementById('createUpdateForm')
+				console.log(JSON.stringify(department))
+                form.querySelector('input[name="dept_no"]').value = department.dept_no
+                form.querySelector('input[name="dept_name"]').value = department.dept_name
+                   
+            }
+
+            function readDepartmentFromRow(rowElement){
+                console.log("In read Department")
+                department ={}
+                department.dept_no = rowElement.cells[0].innerHTML
+                department.dept_name = rowElement.cells[1].innerHTML
+                
+                
+                return department
+            }
+
+            function updateTableRow(department){
+			    console.log("in update table row")
+                rowElement = document.getElementById(department.dept_no)
+                rowElement.cells[1].innerHTML = department.dept_no
+                rowElement.cells[2].innerHTML = department.dept_name
+                
+            }
+        function populateTable() {
+            $.ajax(
+                {
+                    url: 'http://localhost:5000/department',
+                    method: 'GET',
+                    dataType: 'JSON',
+                    success: function (results) {
+                        for (department of results) {
+                            addDepartmentToTable(department)
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error " + error + " code " + status)
+                    }
+
+                })
+        }
+
+        function addDepartmentToTable(department) {
+		   console.log(JSON.stringify(department))
+		    
+            clearForm()
+            tableElem = document.getElementById("departmentTable")
+            rowElem = tableElem.insertRow(-1)
+            rowElem.setAttribute("id", department.dept_no)
+            cell1 = rowElem.insertCell(0)
+            cell1.innerHTML = department.dept_no
+            cell2 = rowElem.insertCell(1)
+            cell2.innerHTML = department.dept_name
+            cell3 = rowElem.insertCell(2)
+            cell3.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
+            cell4 = rowElem.insertCell(3)
+            cell4.innerHTML = '<button onclick="doDelete(this)">delete</button>'
+        }
+        populateTable()
+    </script>
+</body>
+
+</html>
