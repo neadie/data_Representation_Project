@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+<nav class="navbar navbar-dark bg-dark">
+  
+     <div class="container-fluid">
+    <ul class="nav nav-pills navbar-right">
+      <li class="active"><a href="employeesUI.html" class="navbar-item">Employees  </a></li>
+      <li><a href="departmentsUI.html" class="navbar-item">Departments  </a></li>
+      <a href="filesUI.html" class="navbar-item">Google Files   </a></li>
+    </ul>
+	</div>
+  
+  </nav>
+    <div id="display">
+        <h2>Gooogle Files </h2>
+        
+        <table class="table" id="GoogleFileTable">
+            <tr>
+                
+                <th>File Name</th>
+                <th></th>
+                <th></th>
+            </tr>
+
+        </table>
+    </div>
+    <script>
+       
+
+      
+
+            function readDepartmentFromRow(rowElement){
+                console.log("In read Department")
+                file ={}
+                file.file_name = rowElement.cells[0].innerHTML
+                return file
+				}
+            
+
+          
+        function populateTable() {
+            $.ajax(
+                {
+                    url: 'http://localhost:5000/files',
+                    method: 'GET',
+                    dataType: 'JSON',
+                    success: function (results) {
+                        for (file of results) {
+                            addFileToTable(file)
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error " + error + " code " + status)
+                    }
+
+                })
+        }
+
+        function addFileToTable(file) {
+		   console.log(JSON.stringify(file))
+            tableElem = document.getElementById("GoogleFileTable")
+            rowElem = tableElem.insertRow(-1)
+            rowElem.setAttribute("id", file.file_name)
+            cell1 = rowElem.insertCell(0)
+            cell1.innerHTML = file.file_name 
+        }
+        populateTable()
+    </script>
+</body>
+
+</html>

@@ -46,7 +46,8 @@ class GoogleDriveAPI:
                                           pageToken=page_token).execute()
             for file in response.get('files', []):
                 print ('Found file: %s (%s)' % (file.get('name'), file.get('id')))
-                returnArray.append(file.get('name'))
+                resultAsDict = self.convertToDict(file.get('name'))
+                returnArray.append(resultAsDict)
             page_token = response.get('nextPageToken', None)
             if page_token is None:
                 break
@@ -64,13 +65,22 @@ class GoogleDriveAPI:
                                           pageToken=page_token).execute()
             for file in response.get('files', []):
                 print ('Found file: %s (%s)' % (file.get('name'), file.get('id')))
-                returnArray.append(file.get('name'))
+                resultAsDict = self.convertToDict(file.get('name'))
+                returnArray.append(resultAsDict)
             page_token = response.get('nextPageToken', None)
             if page_token is None:
                 break
         return returnArray
 
 
+    def convertToDict(self, result):
+          
+          file = {}
+
+          if result:
+              value = result
+              file['file_name'] = value
+          return file
 
 
 

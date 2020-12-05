@@ -3,17 +3,23 @@
 
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body>
-<div class="navbar">
-        <a href="/" class="navbar-brand">Data Representation Project</a>
-        <a href="employeesUI.html" class="navbar-item">Employees</a>
-        <a href="departmentsUI.html" class="navbar-item">Departments</a>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="index.html">Data Representation Project</a>
     </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="employeesUI.html" class="navbar-item">Employees</a></li>
+      <li><a href="departmentsUI.html" class="navbar-item">Departments</a></li>
+      <a href="filesUI.html" class="navbar-item">Google Files</a></li>
+    </ul>
+  </div>
+</nav>
     <div id="create-edit" style="display: none;">
         <h2>Create -Edit</h2>
         <table id="createUpdateForm">
@@ -29,15 +35,15 @@
            
             <tr>
                 <td></td>
-                <td><button id="create-button" onclick="doCreate()">Create </button></td>
-                <td><button id="update-button" onclick="doUpdate()">Update</button></td>
+                <td><button id="create-button" class="btn btn-success" onclick="doCreate()">Create </button></td>
+                <td><button id="update-button" class="btn btn-success" onclick="doUpdate()">Update</button></td>
             </tr>
 
         </table>
     </div>
     <div id="display">
         <h2>Departments</h2>
-        <button onclick="showCreate()">Create</button>
+        <button onclick="showCreate()" class="btn btn-success">Create</button>
         <table class="table" id="departmentTable">
             <tr>
                 <th>Department Code</th>
@@ -219,9 +225,9 @@
             cell2 = rowElem.insertCell(1)
             cell2.innerHTML = department.dept_name
             cell3 = rowElem.insertCell(2)
-            cell3.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
+            cell3.innerHTML = '<button onclick="showUpdate(this)" class="btn btn-success">Update</button>'
             cell4 = rowElem.insertCell(3)
-            cell4.innerHTML = '<button onclick="doDelete(this)">delete</button>'
+            cell4.innerHTML = '<button onclick="doDelete(this)" class="btn btn-success">delete</button>'
         }
         populateTable()
     </script>
