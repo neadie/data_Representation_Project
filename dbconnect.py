@@ -17,12 +17,8 @@ class DBConnection :
 
    @staticmethod
    def getConnection():
-     
-            db = mysql.connector.connect(
-            pool_name='my_connection_pool'
-        )
-     
-            return db
+         db = mysql.connector.connect(pool_name='my_connection_pool')
+         return db
     
    def __init__(self):
       """ Virtually private constructor. """
@@ -31,11 +27,11 @@ class DBConnection :
       else:
          DBConnection.__instance = self
          DBConnection.__conn=DBConnection.initConnectToDB()
-         DBConnection.__conn.close()
+         
        
    @staticmethod     
    def initConnectToDB():
-        db = mysql.connector.connect(
+        DBConnection.__conn = mysql.connector.connect(
             host=       cfg.mysql['host'],
             user=       cfg.mysql['user'],
             password=   cfg.mysql['password'],
@@ -43,8 +39,8 @@ class DBConnection :
             pool_name='my_connection_pool',
             pool_size=10
         )
-        return db
-
+        
+        
 
 
 dbconnection = DBConnection.getInstance()
