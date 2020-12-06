@@ -5,7 +5,7 @@ class DBConnection :
  
     
    __instance = None
-  
+   __conn = None
    
    @staticmethod 
    def getInstance():
@@ -30,8 +30,8 @@ class DBConnection :
          raise Exception("This class is a singleton!")
       else:
          DBConnection.__instance = self
-         db=DBConnection.initConnectToDB()
-         db.close()
+         DBConnection.__conn=DBConnection.initConnectToDB()
+         DBConnection.__conn.close()
        
    @staticmethod     
    def initConnectToDB():
