@@ -5,6 +5,7 @@ class DBConnection :
  
     
    __instance = None
+  
    
    @staticmethod 
    def getInstance():
@@ -29,11 +30,11 @@ class DBConnection :
          raise Exception("This class is a singleton!")
       else:
          DBConnection.__instance = self
-         db=self.initConnectToDB()
+         db=DBConnection.initConnectToDB()
          db.close()
        
-         
-   def initConnectToDB(self):
+   @staticmethod     
+   def initConnectToDB():
         db = mysql.connector.connect(
             host=       cfg.mysql['host'],
             user=       cfg.mysql['user'],
