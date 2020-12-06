@@ -1,4 +1,5 @@
 import mysql.connector
+
 import dbconfig as cfg
 class EmployeeDAO:
     def initConnectToDB(self):
@@ -12,9 +13,9 @@ class EmployeeDAO:
               pool_size=10
           )
         except mysql.connector.Error as err:
-            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            if err.errno == mysql.connector.mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Something is wrong with your user name or password")
-            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            elif err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
                 print("Database does not exist")
             else:
                print(err)
@@ -27,9 +28,9 @@ class EmployeeDAO:
             pool_name='my_connection_pool'
         )
         except mysql.connector.Error as err:
-            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Something is wrong with your user name or password")
-            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            elif err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
                 print("Database does not exist")
             else:
                print(err)
@@ -40,9 +41,9 @@ class EmployeeDAO:
             db=self.initConnectToDB()
             db.close()
         except mysql.connector.Error as err:
-            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Something is wrong with your user name or password")
-            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            elif err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
                 print("Database does not exist")
             else:
                print(err)
@@ -65,9 +66,9 @@ class EmployeeDAO:
             cursor.close()
             db.close()
         except mysql.connector.Error as err:
-            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Something is wrong with your user name or password")
-            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            elif err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
                 print("Database does not exist")
             else:
                print(err)
@@ -88,9 +89,9 @@ class EmployeeDAO:
             cursor.close()
             db.close()
         except mysql.connector.Error as err:
-            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Something is wrong with your user name or password")
-            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            elif err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
                 print("Database does not exist")
             else:
                print(err)
@@ -108,9 +109,9 @@ class EmployeeDAO:
             cursor.close()
             db.close()
         except mysql.connector.Error as err:
-            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Something is wrong with your user name or password")
-            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            elif err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
                 print("Database does not exist")
             else:
                print(err)
@@ -136,9 +137,9 @@ class EmployeeDAO:
             cursor.close()
             db.close()
         except mysql.connector.Error as err:
-            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Something is wrong with your user name or password")
-            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            elif err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
                 print("Database does not exist")
             else:
                print(err)
@@ -156,9 +157,9 @@ class EmployeeDAO:
             cursor.close()
             db.close()
         except mysql.connector.Error as err:
-            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            if err.errno == mysql.connector.errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Something is wrong with your user name or password")
-            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            elif err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
                 print("Database does not exist")
             else:
                print(err)
