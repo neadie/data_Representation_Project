@@ -1,14 +1,13 @@
 import mysql.connector
 from dbconnect import dbconnection
 class EmployeeDAO:
+    db = dbconnection.getConnection()
 
     def __init__(self):
         pass
 
     def create(self, employee):
-     
-            db = dbconnection.getConnection()
-            cursor = db.cursor()
+            cursor = EmployeeDAO.db.cursor()
             sql = "insert into employees (first_name, last_name, dept_no,birth_date, hire_date) values (%s,%s,%s,%s,%s)"
             values = [
   
@@ -26,9 +25,7 @@ class EmployeeDAO:
 
 
     def getAll(self):
-     
-            db = dbconnection.getConnection()
-            cursor = db.cursor()
+            cursor = EmployeeDAO.db.cursor()
             sql="SELECT emp_no,employees.first_name,employees.last_name,employees.dept_no,employees.birth_date,employees.hire_date FROM employees"
             cursor.execute(sql)
             results = cursor.fetchall()
@@ -39,9 +36,7 @@ class EmployeeDAO:
             return returnArray
 
     def findByNo(self, emp_no):
-        
-            db = dbconnection.getConnection()
-            cursor = db.cursor()
+            cursor = EmployeeDAO.db.cursor()
             sql = 'select * from employees where emp_no = %s'
             values = [ emp_no ]
             cursor.execute(sql, values)
@@ -50,9 +45,8 @@ class EmployeeDAO:
 
 
     def update(self, employee):
-        
-            db = dbconnection.getConnection()
-            cursor = db.cursor()
+
+            cursor = EmployeeDAO.db.cursor()
             sql = "update employees set first_name = %s, last_name = %s,dept_no = %s, birth_date=%s, hire_date=%s where emp_no = %s"
             values = [
             
@@ -70,8 +64,7 @@ class EmployeeDAO:
     
     def delete(self, emp_no):
         
-            db = dbconnection.getConnection()
-            cursor = db.cursor()
+            cursor = EmployeeDAO.db.cursor()
             sql="delete from employees where emp_no = %s"
             values = (emp_no,)
             cursor.execute(sql, values)
@@ -89,4 +82,10 @@ class EmployeeDAO:
                 value = result[i]
                 employee[colName] = value
         return employee   
+
+
+
+    def __del__(self):
+       db.close()
+
 employeeDAO = EmployeeDAO()

@@ -1,7 +1,7 @@
 import mysql.connector
 from dbconnect import dbconnection
 class DepartmentDAO:
-    
+    db = dbconnection.getConnection()
         
         
         
@@ -10,21 +10,19 @@ class DepartmentDAO:
         
     def create(self, department):
         
-            db = dbconnection.getConnection()
-            cursor = db.cursor()
+            
+            cursor = DepartmentDAO.db.cursor()
             sql="insert into departments (dept_no,dept_name) VALUES (%s,%s)"
             values = [ department['dept_no'],department['dept_name'] ]
             cursor.execute(sql, values)
             self.db.commit()
-            db.close()
-       
             return cursor.lastrowid
 
 
     def getAll(self):
       
-            db = dbconnection.getConnection()
-            cursor = db.cursor()
+            
+            cursor = DepartmentDAO.db.cursor()
             sql="select * from departments"
             cursor.execute(sql)
             results = cursor.fetchall()
@@ -37,8 +35,7 @@ class DepartmentDAO:
             return returnArray
 
     def findByNo(self, dept_no):
-            db = dbconnection.getConnection()
-            cursor = db.cursor()
+            cursor = DepartmentDAO.db.cursor()
             sql="select * from departments where dept_no = %s"
             values = [dept_no]
             cursor.execute(sql, values)
@@ -47,8 +44,7 @@ class DepartmentDAO:
 
 
     def update(self, department):
-            db = dbconnection.getConnection()
-            cursor = db.cursor()
+            cursor = DepartmentDAO.db.cursor()
             sql="update departments set dept_name= %s where dept_no = %s"
             print(sql)
             values =[ department['dept_name'], department['dept_no'] ]
@@ -59,15 +55,16 @@ class DepartmentDAO:
 
     
     def delete(self, emp_no):
-            db = dbconnection.getConnection()
-            cursor = db.cursor()
+            cursor = DepartmentDAO.db.cursor()
             sql="delete from departments where dept_no = %s"
             values = (emp_no,)
             cursor.execute(sql, values)
             db.commit()
            
    
-         
+    
+    def __del__(self):
+       db.close()     
             
 
     def convertToDict(self, result):
