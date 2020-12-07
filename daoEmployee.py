@@ -105,7 +105,6 @@ class EmployeeDAO:
 
 
 
-    def __del__(self):
-       self.db.close()
+   
 
 employeeDAO = EmployeeDAO()

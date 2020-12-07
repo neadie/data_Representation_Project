@@ -77,8 +77,7 @@ class DepartmentDAO:
            
    
     
-    def __del__(self):
-       self.db.close()     
+        
             
 
     def convertToDict(self, result):
