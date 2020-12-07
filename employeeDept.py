@@ -1,5 +1,5 @@
 import mysql.connector
-import dbconfig as cfg
+from dbconnect import dbconnection
 class EmployeeDept:
 
 
