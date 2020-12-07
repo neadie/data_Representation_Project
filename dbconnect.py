@@ -17,8 +17,11 @@ class DBConnection :
 
    @staticmethod
    def getConnection():
-         db = mysql.connector.connect(pool_name='my_connection_pool')
-         return db
+        if DBConnection.__conn != None:
+           return DBConnection.__conn
+        else:
+           return mysql.connector.connect(pool_name='my_connection_pool')
+         
     
    def __init__(self):
       """ Virtually private constructor. """
