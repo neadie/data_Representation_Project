@@ -39,6 +39,10 @@ class DBConnection(object) :
             pool_size=10
         )
 
+    def __del__(self):
+        if self.conn != None:
+            self.conn.close()
+
    
        
 
