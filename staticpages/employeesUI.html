@@ -98,7 +98,7 @@
 		$(document).ready(function () {
         
             
-            var url = "http://sineadf.pythonanywhere.com:5000/department";
+            var url = "http://sineadf.pythonanywhere.com/department";
 
             $.getJSON(url, function (data) {
                 $.each(data, function (index, value) {
@@ -254,7 +254,7 @@
         function populateTable() {
             $.ajax(
                 {
-                    url: 'http://sineadf.pythonanywhere.com:5000/employees',
+                    url: 'http://sineadf.pythonanywhere.com/employees',
                     method: 'GET',
                     dataType: 'JSON',
                     success: function (results) {
