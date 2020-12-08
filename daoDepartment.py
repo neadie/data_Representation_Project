@@ -1,93 +1,49 @@
 import mysql.connector
-import dbconfig as cfg
+
+from sqlconnect import session,Departments
 class DepartmentDAO:
-    db = ""
-        
-        
-        
-    def connectToDB(self):
-        self.db = mysql.connector.connect(
-            host=       cfg.mysql['host'],
-            user=       cfg.mysql['user'],
-            password=   cfg.mysql['password'],
-            database=   cfg.mysql['database']
-        )
-    def __init__(self): 
-        self.connectToDB()
-     
     
-    def getCursor(self):
-        if not self.db.is_connected():
-            self.connectToDB()
-        return self.db.cursor()
         
     def create(self, department):
-            cursor = self.getCursor()
-            sql="insert into departments (dept_no,dept_name) VALUES (%s,%s)"
-            values = [ department['dept_no'],department['dept_name'] ]
-            cursor.execute(sql, values)
-            self.db.commit()
-            lastRowId=cursor.lastrowid
-            cursor.close()
-            return lastRowId
+            dept = Departments(dept_no=department['dept_no'],dept_name = department['dept_name'])
+            session.add(dept)
+            session.commit()
+            
 
 
     def getAll(self):
-      
-            
-            cursor = self.getCursor()
-            sql="select * from departments"
-            cursor.execute(sql)
-            results = cursor.fetchall()
+            results = session.query(Departments).all()
             returnArray = []
             for result in results:
-                resultAsDict = self.convertToDict(result)
+                resultAsDict = self.to_dict(result)
                 returnArray.append(resultAsDict)
-            cursor.close()
+            
             return returnArray
 
     def findByNo(self, dept_no):
-            cursor = self.getCursor()
-            sql="select * from departments where dept_no = %s"
-            values = [dept_no]
-            cursor.execute(sql, values)
-            result = cursor.fetchone()
-            dept = self.convertToDict(result)
-            cursor.close()
+            result = session.query(Departments).filter(Departments.dept_no==dept_no).all()
+            dept = self.to_dict(result)
+            
             return dept
 
 
     def update(self, department):
-            cursor = self.getCursor()
-            sql="update departments set dept_name= %s where dept_no = %s"
-            print(sql)
-            values =[ department['dept_name'], department['dept_no'] ]
-            cursor.execute(sql, values)
-            self.db.commit()
-            cursor.close()
+            session.query(Departments).filter(Departments.dept_no == department['dept_no']).update({Departments.dept_name:department['dept_name']}, synchronize_session = False)
+            session.commit()
             return department
 
     
     def delete(self, emp_no):
-            cursor = self.getCursor()
-            sql="delete from departments where dept_no = %s"
-            values = (emp_no,)
-            cursor.execute(sql, values)
-            self.db.commit()
-           
-   
+            session.query(Departments).filter(Departments.dept_no==emp_no).delete()
+            session.commit()
     
         
             
 
-    def convertToDict(self, result):
-        colnames = ['dept_no','dept_name']
-        department = {}
-
-        if result:
-            for i , colName in enumerate(colnames):
-                value = result[i]
-                department[colName] = value
-        return department
        
+       
+       
+    def to_dict(self,row):
+         return {column.name: getattr(row, row.__mapper__.get_property_by_column(column).key) for column in row.__table__.columns}
+
 departmentDAO = DepartmentDAO()
