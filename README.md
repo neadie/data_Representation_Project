@@ -2,7 +2,7 @@
 
 
 ### Steps to run the application
-
+1. To download the project use command git clone https://github.com/neadie/data_Representation_Project
 1. Connect to mysql server via xammp click on start for both apache and MySql and click on
    Admin for mySql to open up phpMyAdmin.
 2. Click on the databases tab enter data_representation_project in Database name and click on create to create database.
@@ -29,7 +29,7 @@
 8. For my Google Files page 
     If you are not already logged into your Google account, you will be prompted to log in. If you are logged into multiple Google accounts, you will be asked to select one account to use for the authorization.
     Click the Accept button.
-	You get message app if not authorized so click on advanced and 
+	You get message app if not authorized so click on advanced  and click on go the quickstart and 
 	**message grant Quickstart permission View metadata for your google Drive , and click allow to proceed . **#
 	
     The sample will proceed automatically, and you may close the window/tab.
