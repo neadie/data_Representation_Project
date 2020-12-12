@@ -22,14 +22,14 @@ class EmployeeDAO:
 
     def findByNo(self, emp_no):
             result = session.query(Employees).filter(Employees.emp_no==emp_no).all()
-            emp = self.to_dict(result) 
+            emp = self.convertToDict(result) 
             return emp
 
 
-    # def update(self, employee):
-            # session.query(Employees).filter(Employees.emp_no == department['emp_no']).update({Employees.first_name:employee['first_name'], Employees.last_name=employee['last_name'], Employees.dept_no:employee['dept_no'], Employees.birth_date:employee['birth_date'], Employees.hire_date:employee['hire_date']}, synchronize_session = False)
-            # session.commit()
-            # return employee
+    def update(self, employee):
+            session.query(Employees).filter(Employees.emp_no == department['emp_no']).update({Employees.first_name:employee['first_name'],Employees.last_name:employee['last_name'],Employees.dept_no:employee['dept_no'],Employees.birth_date:employee['birth_date'],Employees.hire_date:employee['hire_date']}, synchronize_session = False)
+            session.commit()
+            return employee
 
     
     def delete(self, emp_no):
@@ -43,7 +43,15 @@ class EmployeeDAO:
          return {column.name: getattr(row, row.__mapper__.get_property_by_column(column).key) for column in row.__table__.columns}
  
 
+    def convertToDict(self, result):
+        colnames = ['emp_no','first_name', 'last_name','dept_no','birth_date', 'hire_date']
+        employee = {}
 
+        if result:
+            for i , colName in enumerate(colnames):
+                value = result[i]
+                employee[colName] = value
+        return employee
 
    
 

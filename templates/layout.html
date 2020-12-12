@@ -3,7 +3,6 @@
 
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-     
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
@@ -11,20 +10,24 @@
 <div>
 <ul class="nav nav-pills">
   <li class="nav-item">
-    <a class="nav-link active" href="index.html">Home</a>
+    <a class="nav-link active" href="{{ url_for('index') }}">Home</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="employeesUI.html">Employees</a>
+    <a class="nav-link" href="{{ url_for('employeesUI') }}">Employees</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="departmentsUI.html">Departments</a>
+    <a class="nav-link" href="{{ url_for('departmentsUI') }}">Departments</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="filesUI.html">My Google Files</a>
+    <a class="nav-link" href="{{ url_for('filesUI') }}">My Google Files</a>
   </li>
+  
 </ul>
 </div>
-  <h1> The big project </h1>
-</body>
-
+    </header>
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </body>
 </html>

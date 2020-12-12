@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+     {% block content %}
+  <h1>Welcome {{session['username']}}</h1>
+<div class="card">
+  <div class="card-body">
+    This is Sinead Frawley Assignment for data Representation for 2020 .  This project contains of a sql database and flask app which contains rest ends and front end. 
+	
+	As shown above this site contains data between employees and its departments . A separate part of the project is the external API with authentication . I used google drive .  
+  </div>
+</div>
+  
+  
+  
+  <div>
+   <h1> do you want to log out Click button below to log out  </h1>
+  <button type="button" class="btn btn-primary" onclick="clearSessions()">Logout</button>
+
+  </div>
+  
+  <script>
+  
+         function clearSessions() {
+            $.ajax(
+                {
+                    url: 'http://localhost:5000/logout',
+                    method: 'GET',
+                  
+                    success: function (result) {
+					   window.location = '/';
+                       console.log(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("error " + error + " code " + status)
+                    }
+
+                })
+        }
+  
+  
+
+  </script>
+  
+{% endblock %}

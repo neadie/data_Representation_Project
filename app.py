@@ -1,36 +1,77 @@
-from flask import Flask, url_for, request, redirect, abort, jsonify  
+from flask import Flask, url_for, request, redirect, abort, jsonify  ,session,render_template
 
 from daoDepartment import departmentDAO
 from daoEmployee import employeeDAO
 from GoogleDriveAPI import googleDriveAPI
+from flask_cors import CORS
 app = Flask(__name__, static_url_path='', static_folder='staticpages')
-
+CORS(app)
+app.secret_key = 'someSecrtetasdrgsadfgsdfg3ko'
 from daoDepartment import departmentDAO
 
 
-@app.route("/")
+@app.route('/')
 def index():
- return ""
+    if not 'username' in session:
+        return redirect(url_for('login'))
+    return render_template('index.html')
+
+
+@app.route('/employeesUI')
+def employeesUI():
+    if not 'username' in session:
+        return redirect(url_for('login'))
+    return render_template('employeesUI.html')
+
+@app.route('/departmentsUI')
+def departmentsUI():
+    if not 'username' in session:
+        return redirect(url_for('login'))
+    return render_template('departmentsUI.html')
+
+@app.route('/filesUI')
+def filesUI():
+    if not 'username' in session:
+        return redirect(url_for('login'))
+    return render_template('filesUI.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+            error = 'Invalid Credentials. Please try again.'
+        else:
+            session['username']=request.form['username']
+            return redirect(url_for('index'))
+    return render_template('login.html', error=error)
+
+
 
 
     
 @app.route("/employees")
 def getAllEmployees():
+    if not 'username' in session:
+        abort(401)
     return jsonify(employeeDAO.getAll())
 
 
 @app.route('/employees/<int:emp_no>')
 def findByNo(emp_no):
+    if not 'username' in session:
+        abort(401)
     return jsonify(employeeDAO.findByNo(emp_no))
 
 
 @app.route('/employees', methods=['POST'])
 def create():
-   
-    if not request.json:
+   if not 'username' in session:
+        abort(401)
+   if not request.json:
         abort(400)
 
-    employee = {
+   employee = {
         
         "first_name": request.json["first_name"],
         "last_name": request.json["last_name"],
@@ -38,42 +79,49 @@ def create():
         "birth_date": request.json["birth_date"],
         "hire_date": request.json["hire_date"]
     }
-    return jsonify(employeeDAO.create(employee))
+   return jsonify(employeeDAO.create(employee))
 
-    return "served by Create "
+   return "served by Create "
 
 
 @app.route('/department', methods=['POST'])
 def createDepartment():
-   
-    if not request.json:
+   if not 'username' in session:
+        abort(401)
+   if not request.json:
         abort(400)
 
-    department = {
+   department = {
         
         "dept_no": request.json["dept_no"],
         "dept_name": request.json["dept_name"]
         
-    }
-    return jsonify(departmentDAO.create(department))
+   }
+   return jsonify(departmentDAO.create(department))
 
-    return "served by Create "
+   return "served by Create "
     
 
 
 @app.route("/department")
 def alldepartments():
+    if not 'username' in session:
+        abort(401)
     return jsonify(departmentDAO.getAll())
 
 
 @app.route('/department/<int:dept_no>')
 def findByDeptNo(dept_no):
+    if not 'username' in session:
+        abort(401)
     return jsonify(departmentDAO.findByNo(dept_no))
 
 
 
 @app.route('/employees/<int:emp_no>', methods=['PUT'])
 def update(emp_no):
+    if not 'username' in session:
+        abort(401)
     foundEmployee=employeeDAO.findByNo(emp_no)
     print (foundEmployee)
     if foundEmployee == {}:
@@ -98,6 +146,8 @@ def update(emp_no):
 
 @app.route('/department/<int:dept_no>', methods=['PUT'])
 def updateDept(dept_no):
+    if not 'username' in session:
+        abort(401)
     foundDepartment=departmentDAO.findByNo(dept_no)
     if foundDepartment == {}:
         return jsonify({}), 404
@@ -113,6 +163,8 @@ def updateDept(dept_no):
 
 @app.route('/employees/<int:emp_no>', methods=['DELETE'])
 def delete(emp_no):
+    if not 'username' in session:
+        abort(401)
     employeeDAO.delete(emp_no)
 
     return jsonify({"done": True})
@@ -120,13 +172,25 @@ def delete(emp_no):
 
 @app.route('/department/<int:dept_no>', methods=['DELETE'])
 def deleteDepartment(dept_no):
+    if not 'username' in session:
+        abort(401)
     departmentDAO.delete(dept_no)
     return jsonify({"done": True})
 
 
 @app.route("/files")
 def allfilesINGoogleDrive():
+    if not 'username' in session:
+        abort(401)
     return jsonify(googleDriveAPI.getAllFiles())
+
+
+@app.route('/logout')
+def logout():
+   # if not 'username' in session:
+    #    abort(401)
+    session.pop('username',None)
+    return redirect(url_for('login'))
     
 if __name__ == "__main__":
     app.run(debug=True)
