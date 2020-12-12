@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-import sqlalchemy
+import sqlalchemy 
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
@@ -14,7 +14,9 @@ class Employees(Base):
     dept_no = sqlalchemy.Column(sqlalchemy.Integer, unique=False, nullable=False)
     birth_date = sqlalchemy.Column(sqlalchemy.DateTime, unique=False, nullable=True)
     hire_date = sqlalchemy.Column(sqlalchemy.DateTime, unique=False, nullable=True)
-
+    
+    
+    
         
         
 class Departments(Base):

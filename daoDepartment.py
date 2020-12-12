@@ -21,9 +21,9 @@ class DepartmentDAO:
             return returnArray
 
     def findByNo(self, dept_no):
-            result = session.query(Departments).filter(Departments.dept_no==dept_no).all()
-            dept = self.to_dict(result)
-            
+            results = session.query(Departments).filter(Departments.dept_no==dept_no).all()
+            for result in results:
+                dept = self.to_dict(result)
             return dept
 
 
