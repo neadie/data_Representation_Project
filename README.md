@@ -29,6 +29,9 @@
 8. For my Google Files page 
     If you are not already logged into your Google account, you will be prompted to log in. If you are logged into multiple Google accounts, you will be asked to select one account to use for the authorization.
     Click the Accept button.
+	You get message app if not authorized so click on advanced and 
+	**message grant Quickstart permission View metadata for your google Drive , and click allow to proceed . **#
+	
     The sample will proceed automatically, and you may close the window/tab.
    
    
