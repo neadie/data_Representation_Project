@@ -1,6 +1,5 @@
-import mysql.connector
-
 from sqlconnect import session,Departments
+
 class DepartmentDAO:
     
         
